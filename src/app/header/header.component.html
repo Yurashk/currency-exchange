@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+	<div class="container">
+		<a class="navbar-brand" href="#"> Exchange</a>
+		<div class="collapse navbar-collapse" id="navbarNav">>
+			<ul class="navbar-nav w-100 d-flex justify-content-between">
+				<li (click)="changeCurrentCurrency(currency.key)"
+					*ngFor="let currency of currencyInfo$ | async | keyvalue" class="nav-item active">
+					<div class="nav-link d-flex align-items-center fw-bold text-light w-25">
+						<div
+							class="d-flex justify-content-center align-items-center bg-light bg-opacity-25 p-2 rounded mx-2">
+							<img class="mr-1 p-0" src="assets/icons/{{returnIcon(currency.key)}}">
+						</div>
+						<span class="sr-only ml-2 pl-4"> {{ currency.value}}</span></div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>

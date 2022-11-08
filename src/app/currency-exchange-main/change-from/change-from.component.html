@@ -1,0 +1,27 @@
+<div class="bg-dark card d-flex rounded flex-column shadow-sm  border-success">
+	<div class="card-header">
+		<div class="d-flex justify-content-between w-100 text-muted p-3">
+			<div (click)="setMainCurrency(item.name)" *ngFor="let item of currencyIconsPath"
+				 [ngClass]="item.name==selectedOption  ? 'bg-success' : ' bg-secondary'"
+				 class="rounded d-flex justify-content-center align-items-center p-2">
+				<img class="currency-icons" src="../../assets/icons/{{item.url}}">
+			</div>
+		</div>
+	</div>
+	<div class="card-body d-flex flex-column justify-content-center my-3">
+		<label class="text-light" for="firstCurrency">Choose currency</label>
+		<select #teams (change)="setMainCurrency(teams.value)" [value]="selectedOption"
+				aria-label=".form-select-sm example" class="form-select form-select">
+			<option *ngFor="let currency of currencyInfo$  | async | keyvalue" [selected]="selectedOption ==currency.key "
+					[value]="currency.key">{{currency.key}}</option>
+		</select>
+		<div class="form-group text-light pt-3">
+			<label for="firstCurrency">Amount</label>
+			<input #amountValue (input)="amountUpdate.next(amountValue.value)" [(ngModel)]="exchangeAmount" aria-describedby="emailHelp"
+				   class="form-control"
+				   id="firstCurrency" min="0.1"
+				   placeholder="Enter amount"
+				   type="number">
+		</div>
+	</div>
+</div>
