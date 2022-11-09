@@ -17,7 +17,6 @@ export class CurrencyExchangeMainComponent implements OnInit {
 	exchangeAmountFrom: string = '';
 	exchangeAmountTo: string = '';
 	currencyIconsPath = ICONS;
-
 	constructor(private currencyService: CurrencyService, private changeMainCurrencyService: ChangeMainCurrencyService) {
 		this.currencyInfo$ = this.currencyService.allCurrencyChanged;
 
@@ -34,10 +33,12 @@ export class CurrencyExchangeMainComponent implements OnInit {
 	}
 
 	setNewAmountFrom(value: string) {
+		this.exchangeAmountFrom='';
 		this.exchangeAmountFrom = value;
 	}
 
 	setNewAmountTo(value: string) {
+		this.exchangeAmountTo='';
 		this.exchangeAmountTo = value;
 	}
 }

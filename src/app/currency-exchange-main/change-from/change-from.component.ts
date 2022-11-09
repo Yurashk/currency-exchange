@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Currency, currencyIcons } from '../../interfaces';
-import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
+import { debounceTime, Observable, retry, Subject } from 'rxjs';
 
 @Component({
 	selector: 'app-change-from',
 	templateUrl: './change-from.component.html',
 	styleUrls: [ './change-from.component.css' ]
 })
-export class ChangeFromComponent implements OnDestroy {
+export class ChangeFromComponent implements OnInit,OnDestroy {
 	@Input() currencyIconsPath: currencyIcons[] | undefined;
 	@Input() selectedOption: string | undefined;
 	@Input() currencyInfo$: Observable<Currency> | undefined;
@@ -20,9 +20,13 @@ export class ChangeFromComponent implements OnDestroy {
 	currentAmount: string | undefined = '';
 
 	constructor() {
+	}
+
+	ngOnInit() {
 		this.amountUpdate.pipe(
-			debounceTime(400),
-			distinctUntilChanged())
+			debounceTime(300),
+			retry()
+		)
 			.subscribe((value: string) => {
 				this.currencyAmountChange.emit(value);
 			});

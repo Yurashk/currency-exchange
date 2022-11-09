@@ -17,7 +17,7 @@
 		</select>
 		<div class="form-group text-light pt-3">
 			<label for="firstCurrency">Amount</label>
-			<input #amountValue (input)="amountUpdate.next(amountValue.value)" [(ngModel)]="exchangeAmount" aria-describedby="emailHelp"
+			<input #amountValue (keyup)="amountUpdate.next(amountValue.value)" [(ngModel)]="exchangeAmount" aria-describedby="emailHelp"
 				   class="form-control"
 				   id="firstCurrency" min="0.1"
 				   placeholder="Enter amount"

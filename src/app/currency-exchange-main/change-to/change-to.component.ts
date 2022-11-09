@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Currency, currencyIcons } from '../../interfaces';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, retry, Subject } from 'rxjs';
 import { CurrencyService } from '../../services/currency.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { CurrencyService } from '../../services/currency.service';
 	templateUrl: './change-to.component.html',
 	styleUrls: [ './change-to.component.css' ]
 })
-export class ChangeToComponent implements OnDestroy {
+export class ChangeToComponent implements OnInit,OnDestroy {
 	@Input() currencyIconsPath: currencyIcons[] | undefined;
 	@Input() selectedOption: string | undefined;
 	@Input() exchangeAmount: string | undefined;
@@ -16,7 +16,7 @@ export class ChangeToComponent implements OnDestroy {
 	@Output() currencyAmountChange = new EventEmitter<string>();
 
 	ngOnChanges() {
-		this.currentAmount = this.recountAmount(false, this.exchangeAmount?this.exchangeAmount:'0');
+		this.currentAmount = this.recountAmount(false, this.exchangeAmount?this.exchangeAmount:'');
 	}
 
 	currency: Currency | undefined;
@@ -29,10 +29,10 @@ export class ChangeToComponent implements OnDestroy {
 			this.currency = res;
 			this.currentAmount = this.recountAmount(false, this.exchangeAmount);
 		});
-
+	}
+	ngOnInit() {
 		this.amountUpdate.pipe(
-			debounceTime(400),
-			distinctUntilChanged())
+			debounceTime(300),retry())
 			.subscribe((value: any) => {
 				value =  this.selectedOption!==this.selectedCurrency ? this.recountAmount(true, value) : value;
 				this.currencyAmountChange.emit(value);
